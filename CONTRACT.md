@@ -6,27 +6,27 @@ Binds: [inference.thrift](https://github.com/openabstractions/abstraction-infere
 
 The conventions every OA contract carries are stated once in [CONVENTIONS.md](https://github.com/openabstractions/abstractions/blob/main/idl/CONVENTIONS.md); a rule here that applies one cites its `CONV-` id.
 
-## LCL-A1 — Local process identity
+## [LCL-A1] Local process identity
 
 The operator MUST select the process that listens on the configured IPv4 loopback endpoint and supply its PID and start time. The adapter MUST verify the listener generation before sending request bytes and while reading a response. It MUST refuse a stale or recycled process identity. On platforms that cannot bind loopback connections to their listening process, the adapter MUST refuse construction. The adapter MUST NOT accept an arbitrary HTTP client or a route that can delegate to hosted providers.
 
-## LCL-A2 — Attach-only lifecycle
+## [LCL-A2] Attach-only lifecycle
 
 The adapter MUST treat the configured LocalAI server as externally managed. It MUST NOT start, stop, or unload that server or its backend children. It MAY publish a launch recipe whose command line and environment meet LCL-A5. LocalAI owns its internal process and model lifecycle. If LocalAI exposes a documented safe drain or unload operation, an adapter MAY mediate OA resource-yield requests through it after that behavior has been qualified.
 
-## LCL-A6 — Declared exception to the card [lease](https://openabstractions.github.io/reference.html#concept-resource.lease)
+## [LCL-A6] Declared exception to the card [lease](https://openabstractions.github.io/reference.html#concept-resource.lease)
 
 This provider is a declared exception to the rule that every local engine loads under an `abstraction-resource` card lease and the `gpufault` Guard (VISION 2026-10-01, MODELHOST-H1). Under LCL-A2 LocalAI loads, unloads and watches its own engines, so the adapter holds no lease, composes no Guard and declares no `card:<n>` resource. The resource table shows LocalAI's memory through the platform instrument. The exception ends when a qualified drain under LCL-A2 lets the adapter answer a yield.
 
-## LCL-A3 — Explicit models and local placement
+## [LCL-A3] Explicit models and local placement
 
 The adapter MUST require a nonempty explicit model allowlist and MUST advertise each configured name through a loopback route. It MUST use the shared OA designated leaf for caller identity, admission, and transport. Local placement is established by LCL-A5.
 
-## LCL-A4 — Authorization before backend work
+## [LCL-A4] Authorization before backend work
 
 A request denied by OA rights MUST NOT reach LocalAI. A permitted request MUST preserve the configured OA model name in its host and model attribution. The adapter MUST send its per-launch API key with each request and MUST forward only chat completions; gallery, backend-management, settings and every other endpoint MUST be refused before a connection opens.
 
-## LCL-A5 — Reviewed configuration before attach
+## [LCL-A5] Reviewed configuration before attach
 
 Before serving, the adapter MUST read the selected listener process's executable image, command line, environment and working directory, and MUST refuse with a typed reason naming the unmet condition unless all of these hold:
 

@@ -45,7 +45,7 @@ func NewAPIKey() (string, error) {
 
 // LaunchRecipe returns the LocalAI v4.10.0 launch that the attach check
 // accepts. Flag and variable names are from core/cli/run.go and
-// docs/content/reference/cli-reference.md at tag commit
+// LocalAI/docs/content/reference/cli-reference.md at tag commit
 // 7ad0cbf259f0c7bf9920fe2438fc3630ecd6c672:
 //
 //   - --address=127.0.0.1:<port> replaces the default :8080 on every interface.
